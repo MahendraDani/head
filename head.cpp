@@ -131,30 +131,35 @@ int main(int argc, char** argv){
     string arg = vargv[i];
     if(arg.find("-n")!=-1){
       if(arg.size() != 2){
+        if(!isNumber(arg.substr(2,arg.size()))) return 1;
         opts.lineCount = parseNumber(arg.substr(2,arg.size()));
       }else{
         if(i == vargv.size()-1){
           cerr << "Please provide the number of lines" << "\n";
           return 1;
         }
+
+        if(!isNumber(vargv[i+1])) return 1;
         opts.lineCount = parseNumber(vargv[i+1]);
       }
     }else if(arg.find("--lines=")!=-1){
-      string numStr = arg.substr(8,arg.size());
-      opts.lineCount =  parseNumber(numStr);
+      if(!isNumber(arg.substr(8,arg.size()))) return 1;
+      opts.lineCount =  parseNumber(arg.substr(8,arg.size()));
     }else if(arg.find("-c") !=-1){
       if(arg.size() != 2){
+        if(!isNumber(arg.substr(2,arg.size()))) return 1;
         opts.byteCount = parseNumber(arg.substr(2,arg.size()));
       }else{
         if(i == vargv.size()-1){
           cerr << "Please provide the number of bytes" << "\n";
           return 1;
         }
+        if(!isNumber(vargv[i+1])) return 1;
         opts.byteCount = parseNumber(vargv[i+1]);
       }
     }else if(arg.find("--bytes=") !=-1){
-      string numStr = arg.substr(8,arg.size());
-      opts.byteCount = parseNumber(numStr);
+      if(!isNumber(arg.substr(8,arg.size()))) return 1;
+      opts.byteCount = parseNumber(arg.substr(8,arg.size()));
     }
   }
 
