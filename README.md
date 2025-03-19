@@ -1,0 +1,1 @@
+- [ ] How to read file in bytes, then display the context in text?
