@@ -77,7 +77,6 @@ class FileReader {
     streamsize bytesRead = infile.gcount();
 
     cout.write(buffer.data(), bytesRead);
-    cout << endl;
 
     infile.close();
     return 0;
@@ -127,6 +126,8 @@ int main(int argc, char** argv){
 
   // TODO : handle syntax error like -n=123213 -n-c12323
   // TODO : handle error when flag is provided but any file Path is not provided
+  vector<string> files;
+
   for(int i=1;i < vargv.size();i++){
     string arg = vargv[i];
     if(arg.find("-n")!=-1){
@@ -141,6 +142,7 @@ int main(int argc, char** argv){
 
         if(!isNumber(vargv[i+1])) return 1;
         opts.lineCount = parseNumber(vargv[i+1]);
+        i++;
       }
     }else if(arg.find("--lines=")!=-1){
       if(!isNumber(arg.substr(8,arg.size()))) return 1;
@@ -156,10 +158,13 @@ int main(int argc, char** argv){
         }
         if(!isNumber(vargv[i+1])) return 1;
         opts.byteCount = parseNumber(vargv[i+1]);
+        i++;
       }
     }else if(arg.find("--bytes=") !=-1){
       if(!isNumber(arg.substr(8,arg.size()))) return 1;
       opts.byteCount = parseNumber(arg.substr(8,arg.size()));
+    }else{
+      files.push_back(vargv[i]);
     }
   }
 
@@ -170,14 +175,11 @@ int main(int argc, char** argv){
 
   FileReader fileReader;
   // read text-by-text
-  for(int i=1;i<vargv.size();i++){
-    string filePath = vargv[i];
-    if (filePath.find("-n") != -1 || filePath.find("--lines") != -1 || isNumber(vargv[i]))
-      continue;
-
-    if (filePath.find("-c") != -1 || filePath.find("--bytes") != -1 || isNumber(vargv[i]))
-      continue;
-    
+  for(int i=0;i<files.size();i++){
+    string filePath = files[i];
+    if(files.size() > 1){
+      cout << "==> " << filePath << " <==" << "\n"; 
+    }
     int fs;
     if(opts.byteCount != -1){
       fs = fileReader.readFileByBytes(filePath,opts.byteCount);
@@ -190,6 +192,7 @@ int main(int argc, char** argv){
     if(fs == -1){
       return 1;
     }
+    cout << "\n";
   }
   return 0;
 }
