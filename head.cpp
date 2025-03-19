@@ -104,11 +104,11 @@ int main(int argc, char** argv){
     vargv.push_back(string(argv[i]));
   }
 
-  if(argc = 2){
+  if(argc == 1){
     int cnt = 0;
     string line;
     while(cnt < 10){
-      cin >> line;
+      getline(cin,line);
       cout << line << "\n";
       cnt++;
     }
