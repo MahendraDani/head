@@ -82,6 +82,27 @@ class FileReader {
     return 0;
   }
 
+  int readStdinByText(int lineCount){
+    string line;
+    int cnt =0;
+    while(cnt < lineCount){
+      getline(cin,line);
+      cout << line << "\n";
+      cnt++;
+    }
+    return 0;
+  }
+
+  int readStdinByByte(int byteCount) {
+    vector<char> buffer(byteCount);
+
+    cin.read(buffer.data(), byteCount);
+    streamsize bytesRead = cin.gcount(); 
+
+    cout.write(buffer.data(), bytesRead); 
+    return 0;
+  }
+
   private:
   bool isDirectory(string& path) {
     struct stat pathStat;
@@ -101,17 +122,6 @@ int main(int argc, char** argv){
   vector<string> vargv;
   for(int i=0;i<argc;i++){
     vargv.push_back(string(argv[i]));
-  }
-
-  if(argc == 1){
-    int cnt = 0;
-    string line;
-    while(cnt < 10){
-      getline(cin,line);
-      cout << line << "\n";
-      cnt++;
-    }
-    return 0;
   }
 
   // handle options
@@ -172,8 +182,22 @@ int main(int argc, char** argv){
     cerr << "head: can't combine line and byte counts" << "\n";
     return 1;
   }
-
   FileReader fileReader;
+
+  if(files.size()==0){
+    // read from stdin
+    int fs;
+    if(opts.lineCount !=-1){
+      fs = fileReader.readStdinByText(opts.lineCount);
+    }else if(opts.byteCount !=-1){
+      fs = fileReader.readStdinByByte(opts.byteCount);
+    }else if(opts.lineCount ==-1 && opts.byteCount ==-1){
+      fs = fileReader.readStdinByText(10);
+    }
+
+    if(fs==-1) return 1;
+  }
+  
   // read text-by-text
   for(int i=0;i<files.size();i++){
     string filePath = files[i];
