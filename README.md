@@ -1,6 +1,6 @@
 # Head
 
-Implementation of [head(1)](https://man7.org/linux/man-pages/man1/head.1.html) CLI utility from scratch in C++ following the [Build Your Own Cat Tool](https://codingchallenges.fyi/challenges/challenge-head) coding challenge.
+Implementation of [head(1)](https://man7.org/linux/man-pages/man1/head.1.html) CLI utility from scratch in C++ following the [Build Your Own Head Tool](https://codingchallenges.fyi/challenges/challenge-head) coding challenge.
 
 
 # Setting up locally
